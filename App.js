@@ -31,7 +31,11 @@ const App: () => React$Node = () => {
           contentInsetAdjustmentBehavior="automatic"
           style={styles.scrollView}>
           <Text style={styles.sectionDescription}>
-          TESTING UPDATE OF THE APPLICATION USING CODE PUSH AND APP CENTER.
+            TESTING UPDATE OF THE APPLICATION USING CODE PUSH AND APP CENTER. 
+          </Text>
+
+          <Text style={{ textAlign: "center", color: '#ccc', fontSize: 18 }}>
+            Test performed successfully!! 
           </Text>
         </ScrollView>
       </SafeAreaView>
