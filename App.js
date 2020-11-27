@@ -92,11 +92,16 @@ class App extends Component {
 
   /** Update pops a confirmation dialog, and then immediately reboots the app */
   syncImmediate() {
+    console.log("Atualizando pacote automatico.");
     CodePush.sync(
       { installMode: CodePush.InstallMode.IMMEDIATE, updateDialog: true },
       this.codePushStatusDidChange.bind(this),
       this.codePushDownloadDidProgress.bind(this)
     );
+  }
+
+  componentDidMount() {
+    this.syncImmediate();
   }
 
   render() {
@@ -131,7 +136,7 @@ class App extends Component {
         </TouchableOpacity>
         <Text style={styles.messages}>{this.state.syncMessage || ""}</Text>
 
-        <Text> OPS </Text>
+        <Text> Atualizado </Text>
       </View>
     );
   }
