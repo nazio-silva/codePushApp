@@ -125,11 +125,12 @@ class App extends Component {
         </TouchableOpacity>
         {progressView}
 
-        <TouchableOpacity onPress={this.toggleAllowRestart.bind(this)}>
+        {/* <TouchableOpacity onPress={this.toggleAllowRestart.bind(this)}>
           <Text style={styles.restartToggleButton}>
-            Restart s {this.state.restartAllowed ? "allowed" : "forbidden"}
+            Restart {this.state.restartAllowed ? "allowed" : "forbidden"}
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
+
         <TouchableOpacity onPress={this.getUpdateMetadata.bind(this)}>
           <Text style={styles.syncButton}>Press for Update Metadata</Text>
         </TouchableOpacity>
