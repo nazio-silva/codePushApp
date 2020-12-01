@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { Component } from "react";
 import {
   Dimensions,
@@ -15,7 +16,7 @@ class App extends Component {
     this.state = { restartAllowed: true };
   }
 
-  codePushStatusDidChange = syncStatus => {
+  codePushStatusDidChange(syncStatus) {
     switch (syncStatus) {
       case CodePush.SyncStatus.CHECKING_FOR_UPDATE:
         this.setState({ syncMessage: "Checking for update." });
@@ -51,7 +52,7 @@ class App extends Component {
         });
         break;
     }
-  };
+  }
 
   codePushDownloadDidProgress(progress) {
     this.setState({ progress });
@@ -68,17 +69,16 @@ class App extends Component {
   getUpdateMetadata() {
     CodePush.getUpdateMetadata(CodePush.UpdateState.RUNNING).then(
       metadata => {
+        console.log(`metadata:  ${metadata}`);
         this.setState({
           syncMessage: metadata
             ? JSON.stringify(metadata)
             : "Running binary version",
           progress: false,
         });
-
-        console.log("metadata");
-        console.log(metadata);
       },
       error => {
+        console.log(`error ${error}`);
         this.setState({ syncMessage: "Error: " + error, progress: false });
       }
     );
@@ -87,19 +87,18 @@ class App extends Component {
   /** Update is downloaded silently, and applied on restart (recommended) */
   sync() {
     CodePush.sync(
-      { installMode: CodePush.InstallMode.IMMEDIATE, updateDialog: true },
-      this.codePushStatusDidChange.bind(this),
-      this.codePushDownloadDidProgress.bind(this)
+      { installMode: CodePush.InstallMode.IMMEDIATE, updateDialog: true }
+      //this.codePushStatusDidChange.bind(this),
+      //this.codePushDownloadDidProgress.bind(this)
     );
   }
 
   /** Update pops a confirmation dialog, and then immediately reboots the app */
   syncImmediate() {
-    console.log("syncImmediate");
     CodePush.sync(
-      { installMode: CodePush.InstallMode.IMMEDIATE, updateDialog: true },
-      this.codePushStatusDidChange.bind(this),
-      this.codePushDownloadDidProgress.bind(this)
+      { installMode: CodePush.InstallMode.IMMEDIATE, updateDialog: true }
+      //this.codePushStatusDidChange.bind(this),
+      //this.codePushDownloadDidProgress.bind(this)
     );
   }
 
@@ -119,29 +118,22 @@ class App extends Component {
       <View style={styles.container}>
         <Text style={styles.welcome}>Welcome to CodePush!</Text>
         <TouchableOpacity onPress={this.sync.bind(this)}>
-          <Text style={styles.syncButton}>
-            Pressione para sincronização em segundo plano
-          </Text>
+          <Text style={styles.syncButton}>Press for background sync</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={this.syncImmediate.bind(this)}>
-          <Text style={styles.syncButton}>
-            Pressione para sincronização orientada por diálogo
-          </Text>
+          <Text style={styles.syncButton}>Press for dialog-driven sync</Text>
         </TouchableOpacity>
         {progressView}
+
         <TouchableOpacity onPress={this.toggleAllowRestart.bind(this)}>
           <Text style={styles.restartToggleButton}>
-            Restart {this.state.restartAllowed ? "allowed" : "forbidden"}
+            Restart s {this.state.restartAllowed ? "allowed" : "forbidden"}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={this.getUpdateMetadata.bind(this)}>
-          <Text style={styles.syncButton}>
-            Pressione para atualizar metadados
-          </Text>
+          <Text style={styles.syncButton}>Press for Update Metadata</Text>
         </TouchableOpacity>
         <Text style={styles.messages}>{this.state.syncMessage || ""}</Text>
-
-        <Text> Nova versão do app 1000 </Text>
       </View>
     );
   }
@@ -169,11 +161,11 @@ const styles = StyleSheet.create({
   },
   syncButton: {
     color: "green",
-    fontSize: 17,
-    backgroundColor: "#EDA9",
-    borderRadius: 10,
     padding: 20,
     margin: 10,
+    backgroundColor: "#ccff",
+    borderRadius: 10,
+    fontSize: 17,
   },
   welcome: {
     fontSize: 20,
@@ -187,12 +179,8 @@ const styles = StyleSheet.create({
  * different check frequency, such as ON_APP_START, for a 'hands-off' approach where CodePush.sync() does not
  * need to be explicitly called. All options of CodePush.sync() are also available in this decorator.
  */
-let codePushOptions = {
-  checkFrequency: CodePush.CheckFrequency.ON_APP_START,
-  installMode: CodePush.InstallMode.IMMEDIATE,
-};
+let codePushOptions = { checkFrequency: CodePush.CheckFrequency.MANUAL };
 
-export default CodePush(codePushOptions)(App);
+App = CodePush(codePushOptions)(App);
 
-//appcenter codepush release-react -a NazioSilva/CodePushApp -d Staging
-// https://dev.to/mpezeshkzade/how-to-rapidly-update-your-react-native-android-project-using-code-push-without-app-store-upload-5561
+export default App;
