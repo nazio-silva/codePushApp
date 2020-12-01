@@ -95,7 +95,7 @@ class App extends Component {
 
   /** Update pops a confirmation dialog, and then immediately reboots the app */
   syncImmediate() {
-    console.log("Atualizando pacote automatico.");
+    console.log("syncImmediate");
     CodePush.sync(
       { installMode: CodePush.InstallMode.IMMEDIATE, updateDialog: true },
       this.codePushStatusDidChange.bind(this),
@@ -141,7 +141,7 @@ class App extends Component {
         </TouchableOpacity>
         <Text style={styles.messages}>{this.state.syncMessage || ""}</Text>
 
-        {/* <Text> Nova versão do app 2 </Text> */}
+        <Text> Nova versão do app 500 </Text>
       </View>
     );
   }
@@ -189,8 +189,10 @@ const styles = StyleSheet.create({
  */
 let codePushOptions = {
   checkFrequency: CodePush.CheckFrequency.ON_APP_START,
+  installMode: CodePush.InstallMode.IMMEDIATE,
 };
 
 export default CodePush(codePushOptions)(App);
 
 //appcenter codepush release-react -a NazioSilva/CodePushApp -d Staging
+// https://dev.to/mpezeshkzade/how-to-rapidly-update-your-react-native-android-project-using-code-push-without-app-store-upload-5561
