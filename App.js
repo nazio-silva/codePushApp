@@ -74,6 +74,9 @@ class App extends Component {
             : "Running binary version",
           progress: false,
         });
+
+        console.log("metadata");
+        console.log(metadata);
       },
       error => {
         this.setState({ syncMessage: "Error: " + error, progress: false });
@@ -84,7 +87,7 @@ class App extends Component {
   /** Update is downloaded silently, and applied on restart (recommended) */
   sync() {
     CodePush.sync(
-      {},
+      { installMode: CodePush.InstallMode.IMMEDIATE, updateDialog: true },
       this.codePushStatusDidChange.bind(this),
       this.codePushDownloadDidProgress.bind(this)
     );
@@ -98,10 +101,6 @@ class App extends Component {
       this.codePushStatusDidChange.bind(this),
       this.codePushDownloadDidProgress.bind(this)
     );
-  }
-
-  componentDidMount() {
-    this.syncImmediate();
   }
 
   render() {
@@ -120,10 +119,14 @@ class App extends Component {
       <View style={styles.container}>
         <Text style={styles.welcome}>Welcome to CodePush!</Text>
         <TouchableOpacity onPress={this.sync.bind(this)}>
-          <Text style={styles.syncButton}>Press for background sync</Text>
+          <Text style={styles.syncButton}>
+            Pressione para sincronização em segundo plano
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={this.syncImmediate.bind(this)}>
-          <Text style={styles.syncButton}>Press for dialog-driven sync</Text>
+          <Text style={styles.syncButton}>
+            Pressione para sincronização orientada por diálogo
+          </Text>
         </TouchableOpacity>
         {progressView}
         <TouchableOpacity onPress={this.toggleAllowRestart.bind(this)}>
@@ -132,11 +135,13 @@ class App extends Component {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={this.getUpdateMetadata.bind(this)}>
-          <Text style={styles.syncButton}>Press for Update Metadata</Text>
+          <Text style={styles.syncButton}>
+            Pressione para atualizar metadados
+          </Text>
         </TouchableOpacity>
         <Text style={styles.messages}>{this.state.syncMessage || ""}</Text>
 
-        <Text> Atualizado </Text>
+        <Text> Nova versão do app </Text>
       </View>
     );
   }
@@ -165,6 +170,10 @@ const styles = StyleSheet.create({
   syncButton: {
     color: "green",
     fontSize: 17,
+    backgroundColor: "#EDA9",
+    borderRadius: 10,
+    padding: 20,
+    margin: 10,
   },
   welcome: {
     fontSize: 20,
@@ -178,6 +187,8 @@ const styles = StyleSheet.create({
  * different check frequency, such as ON_APP_START, for a 'hands-off' approach where CodePush.sync() does not
  * need to be explicitly called. All options of CodePush.sync() are also available in this decorator.
  */
-let codePushOptions = { checkFrequency: CodePush.CheckFrequency.MANUAL };
+let codePushOptions = {
+  checkFrequency: CodePush.CheckFrequency.CHECKING_FOR_UPDATE,
+};
 
 export default CodePush(codePushOptions)(App);
