@@ -141,7 +141,7 @@ class App extends Component {
         </TouchableOpacity>
         <Text style={styles.messages}>{this.state.syncMessage || ""}</Text>
 
-        <Text> Nova versão do app 500 </Text>
+        <Text> Nova versão do app 1000 </Text>
       </View>
     );
   }
