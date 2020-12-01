@@ -141,7 +141,7 @@ class App extends Component {
         </TouchableOpacity>
         <Text style={styles.messages}>{this.state.syncMessage || ""}</Text>
 
-        <Text> Nova versão do app </Text>
+        {/* <Text> Nova versão do app 2 </Text> */}
       </View>
     );
   }
@@ -188,7 +188,9 @@ const styles = StyleSheet.create({
  * need to be explicitly called. All options of CodePush.sync() are also available in this decorator.
  */
 let codePushOptions = {
-  checkFrequency: CodePush.CheckFrequency.CHECKING_FOR_UPDATE,
+  checkFrequency: CodePush.CheckFrequency.ON_APP_START,
 };
 
 export default CodePush(codePushOptions)(App);
+
+//appcenter codepush release-react -a NazioSilva/CodePushApp -d Staging
