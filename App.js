@@ -87,18 +87,18 @@ class App extends Component {
   /** Update is downloaded silently, and applied on restart (recommended) */
   sync() {
     CodePush.sync(
-      { installMode: CodePush.InstallMode.IMMEDIATE, updateDialog: true }
-      //this.codePushStatusDidChange.bind(this),
-      //this.codePushDownloadDidProgress.bind(this)
+      { installMode: CodePush.InstallMode.IMMEDIATE, updateDialog: true },
+      this.codePushStatusDidChange.bind(this),
+      this.codePushDownloadDidProgress.bind(this)
     );
   }
 
   /** Update pops a confirmation dialog, and then immediately reboots the app */
   syncImmediate() {
     CodePush.sync(
-      { installMode: CodePush.InstallMode.IMMEDIATE, updateDialog: true }
-      //this.codePushStatusDidChange.bind(this),
-      //this.codePushDownloadDidProgress.bind(this)
+      { installMode: CodePush.InstallMode.IMMEDIATE, updateDialog: true },
+      this.codePushStatusDidChange.bind(this),
+      this.codePushDownloadDidProgress.bind(this)
     );
   }
 
@@ -116,23 +116,29 @@ class App extends Component {
 
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to CodePush!</Text>
+        <Text style={styles.welcome}>Minha aplicação usando CODEPUSH</Text>
         <TouchableOpacity onPress={this.sync.bind(this)}>
-          <Text style={styles.syncButton}>Press for background sync</Text>
+          <Text style={styles.syncButton}>
+            Pressione para sincronização em segundo plano
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={this.syncImmediate.bind(this)}>
-          <Text style={styles.syncButton}>Press for dialog-driven sync</Text>
+          <Text style={styles.syncButton}>
+            Pressione para sincronização orientada por diálogo
+          </Text>
         </TouchableOpacity>
         {progressView}
 
         {/* <TouchableOpacity onPress={this.toggleAllowRestart.bind(this)}>
           <Text style={styles.restartToggleButton}>
-            Restart {this.state.restartAllowed ? "allowed" : "forbidden"}
+            opa {this.state.restartAllowed ? "allowed" : "forbidden"}
           </Text>
         </TouchableOpacity> */}
 
         <TouchableOpacity onPress={this.getUpdateMetadata.bind(this)}>
-          <Text style={styles.syncButton}>Press for Update Metadata</Text>
+          <Text style={styles.syncButton}>
+            Pressione para atualizar metadados
+          </Text>
         </TouchableOpacity>
         <Text style={styles.messages}>{this.state.syncMessage || ""}</Text>
       </View>
